@@ -1,0 +1,5 @@
+(executable
+ (public_name allocator_test)
+ (name main)
+ (modules monitor main)
+ (libraries allocator_test yojson unix runtime_events))
