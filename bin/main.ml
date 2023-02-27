@@ -1,6 +1,6 @@
-let data_copies = 50
-let outer_iterations = 1000
-let inner_iterations = 10000
+let data_copies = 125
+let outer_iterations = 5
+let inner_iterations = 25000
 
 let get_test_data () =
   let data = ref [] in
@@ -16,8 +16,9 @@ let get_actor_ids data =
 let () =
   Monitor.start ();
   for i = 0 to outer_iterations do
-    Printf.printf "Iteration %d\n%!" i;
+    Printf.printf "iteration\t%d\n%!" i;
     let actors = get_test_data () |> get_actor_ids |> List.flatten in
+    Gc.compact();
     for j = 1 to inner_iterations do
       let filtered_actors = List.filter (fun id -> id mod j == 0) actors in
          ignore(filtered_actors)
