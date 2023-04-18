@@ -1,5 +1,5 @@
-let data_copies = 125
-let outer_iterations = 5
+let data_copies = 10
+let outer_iterations = 3
 let inner_iterations = 25000
 
 let get_test_data () =
@@ -18,9 +18,10 @@ let () =
   for i = 0 to outer_iterations do
     Printf.printf "iteration\t%d\n%!" i;
     let actors = get_test_data () |> get_actor_ids |> List.flatten in
-    Gc.compact();
     for j = 1 to inner_iterations do
       let filtered_actors = List.filter (fun id -> id mod j == 0) actors in
          ignore(filtered_actors)
-    done
+    done;
+    if Sys.getenv_opt "GC_MAJOR" <> None then Gc.full_major ();
+    if Sys.getenv_opt "GC_COMPACT" <> None then Gc.compact ()
   done
